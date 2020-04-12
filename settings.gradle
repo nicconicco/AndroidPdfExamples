@@ -1,0 +1,2 @@
+rootProject.name='AndroidPdfExamples'
+include ':app'
