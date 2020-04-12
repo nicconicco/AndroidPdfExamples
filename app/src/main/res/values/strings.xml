@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">AndroidPdfExamples</string>
+    <string name="pdf_viewer_example">Pdf viewer example</string>
 </resources>
