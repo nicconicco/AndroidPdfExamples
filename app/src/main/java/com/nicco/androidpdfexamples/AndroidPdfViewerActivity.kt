@@ -24,11 +24,7 @@ class AndroidPdfViewerActivity : AppCompatActivity() {
         }
 
         btnShare.setOnClickListener {
-            val thing =
-                Uri.parse("android.resource://com.nicco.androidpdfexamples/assets/extend_pdf.pdf")
 
-            val intent = Intent(Intent.ACTION_SEND)
-            intent.setDataAndType(thing, "application/pdf")
         }
     }
 }
