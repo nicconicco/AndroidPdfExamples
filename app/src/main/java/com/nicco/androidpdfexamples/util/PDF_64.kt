@@ -39,10 +39,6 @@ object PDF_64 {
         } catch (e: Exception) {
             e.printStackTrace()
         }
-        val dir =
-            File(Environment.getExternalStorageDirectory(), "WorkBox")
-        val imgFile = File(dir, fname)
-        val sendIntent = Intent(Intent.ACTION_SEND)
         val uri: Uri
         uri = if (Build.VERSION.SDK_INT < 24) {
             Uri.fromFile(file)
