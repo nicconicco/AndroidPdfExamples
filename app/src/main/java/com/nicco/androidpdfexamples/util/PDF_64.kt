@@ -42,28 +42,33 @@ object PDF_64 {
         val dir =
             File(Environment.getExternalStorageDirectory(), "WorkBox")
         val imgFile = File(dir, fname)
-        val sendIntent = Intent(Intent.ACTION_VIEW)
+        val sendIntent = Intent(Intent.ACTION_SEND)
         val uri: Uri
         uri = if (Build.VERSION.SDK_INT < 24) {
-            FileProvider.getUriForFile(
-                context,
-                BuildConfig.APPLICATION_ID.toString() + ".provider",
-                file
-            )
-//            Uri.fromFile(file)
+            Uri.fromFile(file)
         } else {
-
             FileProvider.getUriForFile(
                 context,
                 BuildConfig.APPLICATION_ID.toString() + ".provider",
                 file
             )
-//            Uri.parse("file://$imgFile") // My work-around for new SDKs, causes ActivityNotFoundException in API 10.
         }
-        sendIntent.setDataAndType(uri, "application/pdf")
-        sendIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-        sendIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-        context.startActivity(sendIntent)
+
+
+        val intent = Intent()
+        intent.putExtra(Intent.EXTRA_STREAM, uri)
+        intent.type = "application/pdf"
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+
+
+        intent.action = Intent.ACTION_SEND
+        context.startActivity(Intent.createChooser(intent, null))
+
+// Open pdf direct in PDF viewer
+//        sendIntent.setDataAndType(uri, "application/pdf")
+//        sendIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+//        sendIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+//        context.startActivity(sendIntent)
     }
 
     fun getFileFromBase64AndSaveInSDCard(

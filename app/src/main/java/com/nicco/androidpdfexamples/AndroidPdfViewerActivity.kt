@@ -8,6 +8,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.FileProvider
 import androidx.core.content.FileProvider.getUriForFile
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.MultiplePermissionsReport
@@ -61,9 +62,13 @@ class AndroidPdfViewerActivity : AppCompatActivity() {
 
         storetoPdfandOpen(this, PDF_64.pdf)
 //        val imagePath = File(filesDir, "assets")
-//        val newFile = File(imagePath, "extend_pdf.pdf")
+//        val newFile = File(imagePath, "pdf_test.pdf")
 //        val contentUri =
-//            getUriForFile(this, "com.nicco.androidpdfexamples", newFile)
+//            FileProvider.getUriForFile(
+//                this,
+//                BuildConfig.APPLICATION_ID.toString() + ".provider",
+//                newFile
+//            )
 //
 //        val sendIntent: Intent = Intent().apply {
 //            action = Intent.ACTION_SEND
