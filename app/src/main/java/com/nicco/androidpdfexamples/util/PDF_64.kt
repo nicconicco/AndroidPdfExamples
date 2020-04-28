@@ -16,8 +16,29 @@ import java.util.*
 
 
 object PDF_64 {
+    fun storetoPdfandShare(context: Context, base: String?) {
+        val uri: Uri = getPdf(base, context)
 
-    fun storetoPdfandOpen(context: Context, base: String?) {
+        val intent = Intent()
+        intent.putExtra(Intent.EXTRA_STREAM, uri)
+        intent.type = "application/pdf"
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        intent.action = Intent.ACTION_SEND
+        context.startActivity(Intent.createChooser(intent, null))
+    }
+
+    fun storePdfOpenInPdf(context: Context, base: String?) {
+        val uri: Uri = getPdf(base, context)
+
+        val intent = Intent()
+        intent.setDataAndType(uri, "application/pdf")
+        intent.action = Intent.ACTION_VIEW
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        context.startActivity(intent)
+    }
+
+    private fun getPdf(base: String?, context: Context): Uri {
         val root = Environment.getExternalStorageDirectory().toString()
         Log.d("ResponseEnv", root)
         val myDir = File("$root/WorkBox")
@@ -49,60 +70,9 @@ object PDF_64 {
                 file
             )
         }
-
-
-        val intent = Intent()
-        intent.putExtra(Intent.EXTRA_STREAM, uri)
-        intent.type = "application/pdf"
-        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-
-
-        intent.action = Intent.ACTION_SEND
-        context.startActivity(Intent.createChooser(intent, null))
-
-// Open pdf direct in PDF viewer
-//        sendIntent.setDataAndType(uri, "application/pdf")
-//        sendIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-//        sendIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-//        context.startActivity(sendIntent)
+        return uri
     }
 
-    fun getFileFromBase64AndSaveInSDCard(
-        base64: String?,
-        filename: String,
-        extension: String
-    ): GetFilePathAndStatus? {
-        val getFilePathAndStatus = GetFilePathAndStatus()
-        return try {
-            val pdfAsBytes: ByteArray = Base64.decode(base64, 0)
-            val os: FileOutputStream = FileOutputStream(getReportPath(filename, extension), false)
-            os.write(pdfAsBytes)
-            os.flush()
-            os.close()
-            getFilePathAndStatus.filStatus = true
-            getFilePathAndStatus.filePath = getReportPath(filename, extension)
-            getFilePathAndStatus
-        } catch (e: IOException) {
-            e.printStackTrace()
-            getFilePathAndStatus.filStatus = false
-            getFilePathAndStatus.filePath = getReportPath(filename, extension)
-            getFilePathAndStatus
-        }
-    }
-
-    fun getReportPath(filename: String, extension: String): String? {
-        val file =
-            File(Environment.getExternalStorageDirectory().path, "ParentFolder/Report")
-        if (!file.exists()) {
-            file.mkdirs()
-        }
-        return file.absolutePath.toString() + "/" + filename + "." + extension
-    }
-
-    class GetFilePathAndStatus {
-        var filStatus = false
-        var filePath: String? = null
-    }
 
     const val pdf = "JVBERi0xLjYNJeLjz9MNCjM3IDAgb2JqIDw8L0xpbmVhcml6ZWQ" +
             "gMS9MIDIwNTk3L08gNDAvRSAxNDExNS9OIDEvVCAxOTc5NS9IIFsgMTAwNS" +
